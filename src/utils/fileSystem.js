@@ -22,7 +22,10 @@ export function saveThumbnail(soundboardName, uri){
         const ext = arr[arr.length - 1]
 
         file.move(new Directory(soundboard, soundboardName))
-        file.rename("thumbnail."+ext)
+        const newName = "thumbnail."+ext;
+        file.rename(newName)
+
+        return new File(soundboard, soundboardName, newName)
     }catch(err){
         console.log("Saving thumbnail failed :( -- ", err)
     }

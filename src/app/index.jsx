@@ -20,7 +20,7 @@ export default function Index() {
       }}
     >
       {soundboards.map((board)=><Soundboard name={board.name} thumbnail={board.thumbnail} key={board.name}/>)}
-      <MakeSoundboard />
+      <MakeSoundboard setSoundboards={setSoundboards} />
     
     </View>
   );

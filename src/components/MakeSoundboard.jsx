@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Button, TextInput, View, Alert } from "react-native";
 import { createSoundboard, saveThumbnail } from '../utils/fileSystem';
 
-function MakeSoundboard() {
+function MakeSoundboard(props) {
     const [soundboardName, setSoundboardName] = useState();
     const [thumbnailPath, setThumbnailPath] = useState();
 
@@ -23,7 +23,7 @@ function MakeSoundboard() {
     });
 
     if(result.canceled) return;
-    const path = result.assets[0].uri
+    const path = result.assets[0].uri;
     setThumbnailPath(path);
   }
 
@@ -34,7 +34,8 @@ function MakeSoundboard() {
         Alert.alert("Enter Soundboard Name!");
     }else{
         createSoundboard(soundboardName);
-        saveThumbnail(soundboardName, thumbnailPath);
+        const newPath = saveThumbnail(soundboardName, thumbnailPath);
+        props.setSoundboards((prev)=> [...prev, {name: soundboardName, thumbnail: newPath}])
     }
   }
 
