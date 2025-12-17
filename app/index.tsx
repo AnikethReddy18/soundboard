@@ -1,6 +1,9 @@
-import { Text, View } from "react-native";
+import { Text, View, Button, TextInput } from "react-native";
+import { createFolderInRoot, folderExistsInRoot} from "./utils/fileSystem.js"
+import { useState } from "react";
 
 export default function Index() {
+  const [folderName, setFolderName] = useState("")
   return (
     <View
       style={{
@@ -9,7 +12,11 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <TextInput placeholder="enter folder name" value={folderName} onChangeText={setFolderName}></TextInput>
+      <Button title="Load Sound" onPress={() => {
+        createFolderInRoot(folderName)
+        console.log(folderExistsInRoot(folderName))
+        }} />
     </View>
   );
 }
