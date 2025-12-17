@@ -3,13 +3,28 @@ import { File, Paths, Directory } from 'expo-file-system';
 const root =  new Directory(Paths.document);
 const soundboard = new Directory(root, "soundboard");
 
+if(!soundboard.exists) soundboard.create()
+
 // Create the actual soundboard folder
 export function createSoundboard(soundboardName){
     try{
         new Directory(soundboard, soundboardName).create();
     }catch(err){
         console.log("Soundboard creation failed: ", err);
-        throw err;
+    }
+}
+
+export function saveThumbnail(soundboardName, uri){
+    try{
+        const file = new File(uri);
+
+        const arr = uri.split(".");
+        const ext = arr[arr.length - 1]
+
+        file.move(new Directory(soundboard, soundboardName))
+        file.rename("thumbnail."+ext)
+    }catch(err){
+        console.log("Saving thumbnail failed :( -- ", err)
     }
 }
 
@@ -19,7 +34,6 @@ export function createUnit(soundboardName, unitName){
         new Directory(soundboard, soundboardName, unitName).create();
     }catch(err){
         console.log("Unit creation failed: ", err);
-        throw err;
     }
 }
 
@@ -27,10 +41,17 @@ export function createUnit(soundboardName, unitName){
 export function getSoundboards(){
     const folders = new Directory(soundboard).list();
     const res = []
+
     for(const folder of folders){
-        const name = folder.uri.split("/");
-        res.push(name[name.length - 2].replaceAll("%20", " "))
+        const uri = folder.uri.split("/");
+        const name = uri[uri.length - 2].replaceAll("%20", " ");
+        const thumbnail = folder.list()[0].uri;
+
+        const board = { name, thumbnail }
+        res.push(board);
     }
 
     return res;
 }
+
+
