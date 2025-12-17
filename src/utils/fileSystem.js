@@ -29,7 +29,7 @@ export function getSoundboards(){
     const res = []
     for(const folder of folders){
         const name = folder.uri.split("/");
-        res.push(name[name.length - 2])
+        res.push(name[name.length - 2].replaceAll("%20", " "))
     }
 
     return res;

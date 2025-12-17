@@ -1,10 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, TextInput, View } from "react-native";
 import { createSoundboard, getSoundboards } from "../utils/fileSystem.js";
-
+import Soundboard from "../components/Soundboard"
 
 export default function Index() {
   const [soundboardName, setSoundboardName] = useState("")
+  const [soundboards, setSoundboards] = useState([]);
+
+  useEffect(()=>{
+    setSoundboards(getSoundboards())
+  }, [])
+
   return (
     <View
       style={{
@@ -13,7 +19,7 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-
+      {soundboards.map((name)=><Soundboard name={name} key={name}/>)}
 
       <TextInput placeholder="enter sound board name" value={soundboardName} onChangeText={setSoundboardName}></TextInput>
       <Button title="Create Soundboard" onPress={() => {
@@ -22,10 +28,6 @@ export default function Index() {
         }catch(err){
           console.log(err)
         }
-        }} />
-        <Button title="Get Soundboards" onPress={()=>{
-          const boards = getSoundboards();
-          console.log(boards)
         }} />
     </View>
   );
