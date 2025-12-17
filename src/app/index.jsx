@@ -23,7 +23,10 @@ export default function Index() {
           console.log(err)
         }
         }} />
-        <Button title="Get Soundboards" onPress={getSoundboards} />
+        <Button title="Get Soundboards" onPress={()=>{
+          const boards = getSoundboards();
+          console.log(boards)
+        }} />
     </View>
   );
 }

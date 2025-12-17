@@ -26,7 +26,11 @@ export function createUnit(soundboardName, unitName){
 // Get the soundboards
 export function getSoundboards(){
     const folders = new Directory(soundboard).list();
+    const res = []
     for(const folder of folders){
-        console.log(folder.uri); // Make sure it is not a file
+        const name = folder.uri.split("/");
+        res.push(name[name.length - 2])
     }
+
+    return res;
 }
