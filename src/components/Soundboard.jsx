@@ -1,13 +1,18 @@
-import { Text } from "react-native";
+import { Text, View, Pressable } from "react-native";
 import { Image } from 'expo-image';
-import { View } from 'react-native';
+import { Link } from "expo-router";
 
 function Soundboard(props) {
-    return ( <View>
-        <Text> {props.name} </Text>
-        <Text> {props.uri} </Text>
-        <Image style={{height: 100, width: 100}} source={props.thumbnail} />
-        </View>);
+    return (
+        <Link href={props.name} asChild>
+            <Pressable>
+                <View>
+                    <Text> {props.name} </Text>
+                    <Text> {props.uri} </Text>
+                    <Image style={{ height: 100, width: 100 }} source={props.thumbnail} />
+                </View>
+            </Pressable>
+        </Link>);
 }
 
 export default Soundboard;

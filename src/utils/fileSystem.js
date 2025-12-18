@@ -50,7 +50,7 @@ export function getSoundboards(){
         const name = uri[uri.length - 2].replaceAll("%20", " ");
         const thumbnail = folder.list()[0].uri;
 
-        const board = { name, thumbnail, uri: folder.uri}
+        const board = { name, thumbnail}
         res.push(board);
     }
 
