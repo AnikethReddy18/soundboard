@@ -1,13 +1,10 @@
 import * as ImagePicker from 'expo-image-picker';
 import * as DocumentPicker from 'expo-document-picker';
 
-import { useState } from 'react';
 import { Button, TextInput, View, Alert } from "react-native";
 import { createUnit } from '../utils/fileSystem';
 
 function MakeUnit(props) {
-    const [audioPath, setAudioPath] = useState(null);
-    const [thumbnailPath, setThumbnailPath] = useState(null);
 
     async function pickImage() {
         const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -26,7 +23,7 @@ function MakeUnit(props) {
 
         if (result.canceled) return;
         const path = result.assets[0].uri;
-        setThumbnailPath(path);
+        return path;
     }
 
     async function pickAudio() {
@@ -36,23 +33,24 @@ function MakeUnit(props) {
 
         if (result.canceled) return;
         const path = result.assets[0].uri;
-        setAudioPath(path);
+        return path;
     }
 
-    function handlePressMakeUnit() {
+    async function handlePressMakeUnit() {
+        const thumbnailPath = await pickImage();
+        const audioPath = await pickAudio();
+
         if (!thumbnailPath) {
             Alert.alert("Select Thumbnail!");
         } else if (!audioPath) {
             Alert.alert("Enter Soundboard Name!");
         } else {
             const res = createUnit(props.soundboardName, thumbnailPath, audioPath);
-            props.setUnits((prev) => [...prev, { audio: res.audio, thumbnail: res.thumbnail}])
+            props.setUnits((prev) => [...prev, { audio: res.audio, thumbnail: res.thumbnail }])
         }
     }
 
     return (<View>
-        <Button title='Open Image' onPress={pickImage} />
-        <Button title='Open Audio' onPress={pickAudio} />
         <Button title='Make Unit' onPress={handlePressMakeUnit} />
     </View>);
 }
