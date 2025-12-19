@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import Unit from "../components/Unit";
 import {getUnits} from "../utils/fileSystem"
 import MakeUnit from "../components/MakeUnit";
+import { useAudioPlayer } from "expo-audio"
 
 function SoundboardScreen() {
-    const name = useLocalSearchParams().soundboardScreen;
+    const audioPlayer = useAudioPlayer(); console.log(audioPlayer);
     const navigation = useNavigation();
+    const name = useLocalSearchParams().soundboardScreen;
 
     const [units, setUnits] = new useState();
 
@@ -20,7 +22,7 @@ function SoundboardScreen() {
     }, []);
     return (
         <ScrollView>
-            {units && units.map((unit, index)=><Unit thumbnail={unit.thumbnail} audio={unit.audio} key={index} />)}
+            {units && units.map((unit, index)=><Unit thumbnail={unit.thumbnail} audio={unit.audio} audioPlayer={audioPlayer} key={index} />)}
             <MakeUnit soundboardName={name} setUnits={setUnits} />
         </ScrollView>
     );
