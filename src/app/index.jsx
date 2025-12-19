@@ -13,7 +13,7 @@ export default function Index() {
 
   return (
     <ScrollView>
-      {soundboards.map((board)=><Soundboard name={board.name} thumbnail={board.thumbnail} uri={board.uri} key={board.name}/>)}
+      {soundboards.map((board)=><Soundboard name={board.name} thumbnail={board.thumbnail} key={board.name}/>)}
       <MakeSoundboard setSoundboards={setSoundboards} />
     </ScrollView>
   );

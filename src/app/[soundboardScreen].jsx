@@ -1,18 +1,29 @@
-import { Text } from "react-native";
+import { ScrollView, Text, Button } from "react-native";
 import { useLocalSearchParams, useNavigation } from "expo-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Unit from "../components/Unit";
+import {getUnits} from "../utils/fileSystem"
+import MakeUnit from "../components/MakeUnit";
 
 function SoundboardScreen() {
     const name = useLocalSearchParams().soundboardScreen;
     const navigation = useNavigation();
 
+    const [units, setUnits] = new useState();
+
     useEffect(() => {
         navigation.setOptions({
             title: name,
         });
-    }, [navigation]);
+
+        console.log(getUnits(name))
+        setUnits(getUnits(name));
+    }, []);
     return (
-        <Text> {name.soundboardScreen}</Text>
+        <ScrollView>
+            {units && units.map((unit, index)=><Unit thumbnail={unit.thumbnail} audio={unit.audio} key={index} />)}
+            <MakeUnit soundboardName={name} setUnits={setUnits} />
+        </ScrollView>
     );
 }
 

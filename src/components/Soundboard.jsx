@@ -8,7 +8,6 @@ function Soundboard(props) {
             <Pressable>
                 <View>
                     <Text> {props.name} </Text>
-                    <Text> {props.uri} </Text>
                     <Image style={{ height: 100, width: 100 }} source={props.thumbnail} />
                 </View>
             </Pressable>

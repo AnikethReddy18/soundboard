@@ -1,7 +1,7 @@
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
 import { Button, TextInput, View, Alert } from "react-native";
-import { createSoundboard, saveThumbnail } from '../utils/fileSystem';
+import { createSoundboard } from '../utils/fileSystem';
 
 function MakeSoundboard(props) {
     const [soundboardName, setSoundboardName] = useState();
@@ -33,9 +33,8 @@ function MakeSoundboard(props) {
     }else if(!soundboardName){
         Alert.alert("Enter Soundboard Name!");
     }else{
-        createSoundboard(soundboardName);
-        const newPath = saveThumbnail(soundboardName, thumbnailPath);
-        props.setSoundboards((prev)=> [...prev, {name: soundboardName, thumbnail: newPath}])
+        const newtThumbnailPath = createSoundboard(soundboardName, thumbnailPath);
+        props.setSoundboards((prev)=> [...prev, {name: soundboardName, thumbnail: newtThumbnailPath}])
     }
   }
 
