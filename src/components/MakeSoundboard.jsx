@@ -1,6 +1,6 @@
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
-import { Button, TextInput, View, Alert, Modal, Text } from "react-native";
+import { Button, TextInput, View, Alert, Modal, Text, Pressable } from "react-native";
 import { createSoundboard } from '../utils/fileSystem';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
@@ -44,8 +44,15 @@ function MakeSoundboard(props) {
     setModalVisible(false);
   }
 
-  return (<View>
-    <Button title='Make Soundboard' onPress={() => setModalVisible(true)} />
+  return (<View style={{ width: "100%" }}>
+    <Pressable style={{
+      backgroundColor: 'red',
+      padding: 10,
+      borderRadius: 5,
+    }}
+    onPress={() => setModalVisible(true)}>
+      <Text style={{fontSize: 30, alignSelf: "center"}}>Make Soundboard </Text>
+    </Pressable>
 
     <Modal transparent={true} visible={modalVisible}>
       <MaterialIcons name="close" size={22} onPress={() => setModalVisible(false)} />

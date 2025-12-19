@@ -7,8 +7,12 @@ function Soundboard(props) {
         <Link href={props.name} asChild>
             <Pressable>
                 <View>
-                    <Text> {props.name} </Text>
-                    <Image style={{ height: 100, width: 100 }} source={props.thumbnail} />
+                    <Image style={{ 
+                        height: 175, 
+                        width: 175,
+                        borderRadius: 5,
+                        }} source={props.thumbnail} />
+                    <Text style={{alignSelf: "center"}}> {props.name} </Text>
                 </View>
             </Pressable>
         </Link>);
