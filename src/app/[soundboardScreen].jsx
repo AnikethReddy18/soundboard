@@ -7,7 +7,7 @@ import MakeUnit from "../components/MakeUnit";
 import { useAudioPlayer } from "expo-audio"
 
 function SoundboardScreen() {
-    const audioPlayer = useAudioPlayer(); console.log(audioPlayer);
+    const audioPlayer = useAudioPlayer();
     const navigation = useNavigation();
     const name = useLocalSearchParams().soundboardScreen;
 

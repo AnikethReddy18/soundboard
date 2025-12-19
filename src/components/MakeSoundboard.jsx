@@ -1,13 +1,14 @@
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
-import { Button, TextInput, View, Alert } from "react-native";
+import { Button, TextInput, View, Alert, Modal, Text } from "react-native";
 import { createSoundboard } from '../utils/fileSystem';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 function MakeSoundboard(props) {
-    const [soundboardName, setSoundboardName] = useState();
-    const [thumbnailPath, setThumbnailPath] = useState();
+  const [soundboardName, setSoundboardName] = useState();
+  const [modalVisible, setModalVisible] = useState(false)
 
-    async function pickImage(){
+  async function pickImage() {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (!permissionResult.granted) {
@@ -18,31 +19,41 @@ function MakeSoundboard(props) {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images'],
       allowsEditing: true,
-      aspect: [1,1],
+      aspect: [1, 1],
       quality: 1,
     });
 
-    if(result.canceled) return;
+    if (result.canceled) return;
     const path = result.assets[0].uri;
-    setThumbnailPath(path);
+    return path;
   }
 
-  function handlePressMakeSoundboard(){
-    if(!thumbnailPath){
-        Alert.alert("Select Thumbnail!");
-    }else if(!soundboardName){
-        Alert.alert("Enter Soundboard Name!");
-    }else{
-        const newtThumbnailPath = createSoundboard(soundboardName, thumbnailPath);
-        props.setSoundboards((prev)=> [...prev, {name: soundboardName, thumbnail: newtThumbnailPath}])
+  async function makeSoundBoard() {
+    const thumbnailPath = await pickImage();
+
+    if (!thumbnailPath) {
+      Alert.alert("Select Thumbnail!");
+    } else if (!soundboardName) {
+      Alert.alert("Enter Soundboard Name!");
+    } else {
+      const newtThumbnailPath = createSoundboard(soundboardName, thumbnailPath);
+      props.setSoundboards((prev) => [...prev, { name: soundboardName, thumbnail: newtThumbnailPath }])
     }
+
+    setSoundboardName(null);
+    setModalVisible(false);
   }
 
-    return ( <View>
-        <TextInput placeholder='enter name' value={soundboardName} onChangeText={setSoundboardName}/>
-        <Button title='Open Image' onPress={pickImage}/>
-        <Button title='Make Soundboard' onPress={handlePressMakeSoundboard}/>
-    </View> );
+  return (<View>
+    <Button title='Make Soundboard' onPress={() => setModalVisible(true)} />
+
+    <Modal transparent={true} visible={modalVisible}>
+      <MaterialIcons name="close" size={22} onPress={() => setModalVisible(false)} />
+      <TextInput placeholder='Enter the name of soundboard' value={soundboardName} onChangeText={setSoundboardName} />
+      <Button title='Pick Image' disabled={soundboardName == null} onPress={makeSoundBoard} />
+    </Modal>
+
+  </View>);
 }
 
 export default MakeSoundboard;
