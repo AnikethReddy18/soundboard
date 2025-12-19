@@ -9,7 +9,11 @@ function Unit({ thumbnail, audio, audioPlayer }) {
 
     return (
         <Pressable onPress={playAudio}>
-            <Image source={thumbnail} style={{ height: 100, width: 100 }} />
+            <Image style={{
+                height: 175,
+                width: 175,
+                borderRadius: 5,
+            }} source={thumbnail} />
         </Pressable>
     );
 }

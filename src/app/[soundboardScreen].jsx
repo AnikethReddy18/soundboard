@@ -1,4 +1,4 @@
-import { ScrollView, Text, Button } from "react-native";
+import { ScrollView, StyleSheet, View} from "react-native";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { useEffect, useState } from "react";
 import Unit from "../components/Unit";
@@ -21,11 +21,28 @@ function SoundboardScreen() {
         setUnits(getUnits(name));
     }, []);
     return (
-        <ScrollView>
+        <ScrollView contentContainerStyle={styles.container}>
+            <View style={styles.unitsContainer}>
             {units && units.map((unit, index)=><Unit thumbnail={unit.thumbnail} audio={unit.audio} audioPlayer={audioPlayer} key={index} />)}
+            </View>
             <MakeUnit soundboardName={name} setUnits={setUnits} />
         </ScrollView>
     );
 }
 
 export default SoundboardScreen;
+
+const styles = StyleSheet.create({
+  container:{
+    alignItems: "center",
+    padding: 30
+  },
+  unitsContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    rowGap: 20,
+    columnGap: 20,
+    paddingBlock: 30
+  },
+})

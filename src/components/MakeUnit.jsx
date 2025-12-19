@@ -1,7 +1,7 @@
 import * as ImagePicker from 'expo-image-picker';
 import * as DocumentPicker from 'expo-document-picker';
 
-import { Button, TextInput, View, Alert } from "react-native";
+import { Alert, Pressable, Text } from "react-native";
 import { createUnit } from '../utils/fileSystem';
 
 function MakeUnit(props) {
@@ -38,6 +38,7 @@ function MakeUnit(props) {
 
     async function handlePressMakeUnit() {
         const thumbnailPath = await pickImage();
+        if (!thumbnailPath) return;
         const audioPath = await pickAudio();
 
         if (!thumbnailPath) {
@@ -50,9 +51,21 @@ function MakeUnit(props) {
         }
     }
 
-    return (<View>
-        <Button title='Make Unit' onPress={handlePressMakeUnit} />
-    </View>);
+    return (
+        <Pressable onPress={handlePressMakeUnit} style={{
+            backgroundColor: "#2979FF",
+            paddingVertical: 14,
+            borderRadius: 10,
+            width: "100%",
+            alignItems: "center",
+        }}>
+            <Text style={{
+                color: "white",
+                fontSize: 16,
+                fontWeight: "600",
+            }}>Create Unit</Text>
+        </Pressable>
+    );
 }
 
 export default MakeUnit;

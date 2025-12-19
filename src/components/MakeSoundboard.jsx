@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Button, TextInput, View, Alert, Modal, Text, Pressable } from "react-native";
 import { createSoundboard } from '../utils/fileSystem';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { StyleSheet } from 'react-native';
 
 function MakeSoundboard(props) {
   const [soundboardName, setSoundboardName] = useState();
@@ -45,22 +46,96 @@ function MakeSoundboard(props) {
   }
 
   return (<View style={{ width: "100%" }}>
-    <Pressable style={{
-      backgroundColor: 'red',
-      padding: 10,
-      borderRadius: 5,
-    }}
-    onPress={() => setModalVisible(true)}>
-      <Text style={{fontSize: 30, alignSelf: "center"}}>Make Soundboard </Text>
+    <Pressable style={styles.primaryButton}
+      onPress={() => setModalVisible(true)}>
+      <Text style={styles.primaryButtonText}>Make Soundboard </Text>
     </Pressable>
 
-    <Modal transparent={true} visible={modalVisible}>
-      <MaterialIcons name="close" size={22} onPress={() => setModalVisible(false)} />
-      <TextInput placeholder='Enter the name of soundboard' value={soundboardName} onChangeText={setSoundboardName} />
-      <Button title='Pick Image' disabled={soundboardName == null} onPress={makeSoundBoard} />
+    <Modal transparent visible={modalVisible} animationType="fade">
+      <View style={styles.overlay}>
+
+        <View style={styles.modalCard}>
+          <MaterialIcons
+            name="close"
+            size={24}
+            style={styles.closeIcon}
+            onPress={() => setModalVisible(false)}
+          />
+
+          <Text style={styles.title}>Create Soundboard</Text>
+
+          <TextInput
+            placeholder="Enter soundboard name"
+            value={soundboardName}
+            onChangeText={setSoundboardName}
+            style={styles.input}
+          />
+
+          <Pressable
+            style={({ pressed }) => [
+              styles.primaryButton,
+              pressed && { opacity: 0.8 }
+            ]}
+            disabled={!soundboardName}
+            onPress={makeSoundBoard}
+          >
+            <Text style={styles.primaryButtonText}>Pick Thumbnail</Text>
+          </Pressable>
+        </View>
+
+      </View>
     </Modal>
+
 
   </View>);
 }
 
 export default MakeSoundboard;
+
+const styles = StyleSheet.create({
+  overlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.45)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  modalCard: {
+    width: "85%",
+    backgroundColor: "#fff",
+    borderRadius: 16,
+    padding: 20,
+  },
+
+  closeIcon: {
+    alignSelf: "flex-end",
+  },
+
+  title: {
+    fontSize: 20,
+    fontWeight: "600",
+    marginBottom: 15,
+    textAlign: "center",
+  },
+
+  input: {
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 10,
+    padding: 12,
+    marginBottom: 20,
+  },
+
+  primaryButton: {
+    backgroundColor: "#2979FF",
+    paddingVertical: 14,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+
+  primaryButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+});
