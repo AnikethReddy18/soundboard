@@ -10,7 +10,6 @@ export function createSoundboard(soundboardName, thumbnailURI) {
     try {
         const currSoundboard = new Directory(soundboard, soundboardName);
         currSoundboard.create();
-        console.log(currSoundboard);
         const file = new File(thumbnailURI);
 
         const arr = thumbnailURI.split(".");
@@ -30,7 +29,6 @@ export function createUnit(soundboardName, thumbnail, audio) {
     try {
         const currSoundboard = new Directory(soundboard, soundboardName);
         const unit = new Directory(currSoundboard, String(currSoundboard.list().length));
-        console.log(unit)
         unit.create();
 
         const thumbnailFile = new File(thumbnail);
@@ -46,7 +44,7 @@ export function createUnit(soundboardName, thumbnail, audio) {
         thumbnailFile.rename(newThumbnail);
         audioFile.rename(newAudio);
 
-        return {audio: audioFile.uri, thumbnail: thumbnailFile.uri}
+        return {"audio": audioFile.uri, "thumbnail": thumbnailFile.uri}
     } catch (err) {
         console.log("Unit creation failed: ", err);
     }

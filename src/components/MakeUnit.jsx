@@ -46,8 +46,7 @@ function MakeUnit(props) {
             Alert.alert("Enter Soundboard Name!");
         } else {
             const res = createUnit(props.soundboardName, thumbnailPath, audioPath);
-            console.log(res)
-            //props.setUnits((prev) => [...prev, { audio, thumbnail}])
+            props.setUnits((prev) => [...prev, { audio: res.audio, thumbnail: res.thumbnail}])
         }
     }
 

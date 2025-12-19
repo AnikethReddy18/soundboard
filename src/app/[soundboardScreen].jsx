@@ -16,7 +16,6 @@ function SoundboardScreen() {
             title: name,
         });
 
-        console.log(getUnits(name))
         setUnits(getUnits(name));
     }, []);
     return (
