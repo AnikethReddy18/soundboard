@@ -3,7 +3,7 @@ import { useLocalSearchParams, useNavigation } from "expo-router";
 import { useEffect, useState } from "react";
 import Unit from "../components/Unit";
 import {getUnits} from "../utils/fileSystem"
-import MakeUnit from "../components/MakeUnit";
+import MakeUnitButton from "../components/MakeUnitButton";
 import { useAudioPlayer } from "expo-audio"
 
 function SoundboardScreen() {
@@ -25,7 +25,7 @@ function SoundboardScreen() {
             <View style={styles.unitsContainer}>
             {units && units.map((unit, index)=><Unit thumbnail={unit.thumbnail} audio={unit.audio} audioPlayer={audioPlayer} key={index} />)}
             </View>
-            <MakeUnit soundboardName={name} setUnits={setUnits} />
+            <MakeUnitButton soundboardName={name} setUnits={setUnits} />
         </ScrollView>
     );
 }

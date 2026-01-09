@@ -4,7 +4,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import { Alert, Pressable, Text } from "react-native";
 import { createUnit } from '../utils/fileSystem';
 
-function MakeUnit(props) {
+function MakeUnitButton(props) {
 
     async function pickImage() {
         const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -64,4 +64,4 @@ function MakeUnit(props) {
     );
 }
 
-export default MakeUnit;
+export default MakeUnitButton;
