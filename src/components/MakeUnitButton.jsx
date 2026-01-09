@@ -40,15 +40,11 @@ function MakeUnit(props) {
         const thumbnailPath = await pickImage();
         if (!thumbnailPath) return;
         const audioPath = await pickAudio();
+        if (!audioPath) return;
 
-        if (!thumbnailPath) {
-            Alert.alert("Select Thumbnail!");
-        } else if (!audioPath) {
-            Alert.alert("Enter Soundboard Name!");
-        } else {
-            const res = createUnit(props.soundboardName, thumbnailPath, audioPath);
-            props.setUnits((prev) => [...prev, { audio: res.audio, thumbnail: res.thumbnail }])
-        }
+        const res = createUnit(props.soundboardName, thumbnailPath, audioPath);
+        props.setUnits((prev) => [...prev, { audio: res.audio, thumbnail: res.thumbnail }])
+
     }
 
     return (

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, ScrollView, View } from "react-native";
-import { getSoundboards } from "../utils/fileSystem.js";
+import { ScrollView, StyleSheet, View } from "react-native";
+import MakeSoundboardButton from "../components/MakeSoundboardButton.jsx";
 import Soundboard from "../components/Soundboard";
-import MakeSoundboard from "../components/MakeSoundboard.jsx"
+import { getSoundboards } from "../utils/fileSystem.js";
 
 
 export default function Index() {
@@ -17,7 +17,7 @@ export default function Index() {
         <View style={styles.soundboardsContainer}>
         {soundboards.map((board) => <Soundboard name={board.name} thumbnail={board.thumbnail} key={board.name} />)}
         </View>
-        <MakeSoundboard setSoundboards={setSoundboards} /> 
+        <MakeSoundboardButton setSoundboards={setSoundboards} /> 
       </ScrollView>
   );
 }

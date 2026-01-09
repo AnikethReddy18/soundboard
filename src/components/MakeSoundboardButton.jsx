@@ -1,11 +1,10 @@
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
-import { Button, TextInput, View, Alert, Modal, Text, Pressable } from "react-native";
+import { Alert, Modal, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { createSoundboard } from '../utils/fileSystem';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { StyleSheet } from 'react-native';
 
-function MakeSoundboard(props) {
+function MakeSoundboardButton(props) {
   const [soundboardName, setSoundboardName] = useState();
   const [modalVisible, setModalVisible] = useState(false)
 
@@ -90,7 +89,7 @@ function MakeSoundboard(props) {
   </View>);
 }
 
-export default MakeSoundboard;
+export default MakeSoundboardButton;
 
 const styles = StyleSheet.create({
   overlay: {
