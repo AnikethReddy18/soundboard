@@ -8,7 +8,7 @@ function MakeSoundboardButton(props) {
   const [soundboardName, setSoundboardName] = useState();
   const [modalVisible, setModalVisible] = useState(false)
 
-  async function pickImage() {
+  async function pickImageFromGallery() {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (!permissionResult.granted) {
@@ -28,20 +28,36 @@ function MakeSoundboardButton(props) {
     return path;
   }
 
-  async function makeSoundBoard() {
-    const thumbnailPath = await pickImage();
-
-    if (!thumbnailPath) {
-      Alert.alert("Select Thumbnail!");
-    } else if (!soundboardName) {
-      Alert.alert("Enter Soundboard Name!");
-    } else {
-      const newtThumbnailPath = createSoundboard(soundboardName, thumbnailPath);
-      props.setSoundboards((prev) => [...prev, { name: soundboardName, thumbnail: newtThumbnailPath }])
+  async function pickImageFromCamera() {
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+    if (!permissionResult.granted) {
+      console.log(permissionResult)
+      Alert.alert('Permission required', 'Permission to access the camera is required.');
+      return;
     }
 
-    setSoundboardName(null);
-    setModalVisible(false);
+    const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ['images'],
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+
+    if (result.canceled) return;
+    const path = result.assets[0].uri;
+    return path;
+  }
+
+  async function makeSoundBoard(method) {
+    const thumbnailPath = method === "gallery" ? await pickImageFromGallery() : await pickImageFromCamera();
+
+    if(thumbnailPath) {
+      const newtThumbnailPath = createSoundboard(soundboardName, thumbnailPath);
+      props.setSoundboards((prev) => [...prev, { name: soundboardName, thumbnail: newtThumbnailPath }]);
+      setSoundboardName(null);
+      setModalVisible(false);
+    }
   }
 
   return (<View style={{ width: "100%" }}>
@@ -70,22 +86,44 @@ function MakeSoundboardButton(props) {
             style={styles.input}
           />
 
-          <Pressable
-            style={({ pressed }) => [
-              styles.primaryButton,
-              pressed && { opacity: 0.8 }
-            ]}
-            disabled={!soundboardName}
-            onPress={makeSoundBoard}
-          >
-            <Text style={styles.primaryButtonText}>Pick Thumbnail</Text>
-          </Pressable>
+          <View style={styles.thumbnailButtonsContainer}>
+            <Pressable
+              style={({ pressed }) => [
+                styles.primaryButton,
+                pressed && { opacity: 0.8 }
+              ]}
+              onPress={()=>{
+                if(!soundboardName) {
+                  Alert.alert("Error", "Please enter a soundboard name first.");
+                  return;
+                }
+                makeSoundBoard("camera")
+              }}
+            >
+              <Text style={styles.primaryButtonText}>Camera</Text>
+            </Pressable>
+
+            <Pressable
+              style={({ pressed }) => [
+                styles.primaryButton,
+                pressed && { opacity: 0.8 }
+              ]}
+              onPress={() =>{
+                if(!soundboardName) {
+                  Alert.alert("Error", "Please enter a soundboard name first.");
+                  return;
+                }
+                makeSoundBoard("gallery")}
+              }
+            >
+              <Text style={styles.primaryButtonText}>Gallery</Text>
+            </Pressable>
+          </View>
         </View>
+
 
       </View>
     </Modal>
-
-
   </View>);
 }
 
@@ -130,11 +168,18 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 10,
     alignItems: "center",
+    flex: 1,
   },
 
   primaryButtonText: {
     color: "white",
     fontSize: 16,
     fontWeight: "600",
+  },
+
+  thumbnailButtonsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 10,
   },
 });
