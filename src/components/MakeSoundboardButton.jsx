@@ -1,53 +1,13 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
 import { Alert, Modal, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { createSoundboard } from '../utils/fileSystem';
 
+import { pickImageFromCamera, pickImageFromGallery } from '../utils/pick';
+
 function MakeSoundboardButton(props) {
   const [soundboardName, setSoundboardName] = useState();
-  const [modalVisible, setModalVisible] = useState(false)
-
-  async function pickImageFromGallery() {
-    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-    if (!permissionResult.granted) {
-      Alert.alert('Permission required', 'Permission to access the media library is required.');
-      return;
-    }
-
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images'],
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
-    });
-
-    if (result.canceled) return;
-    const path = result.assets[0].uri;
-    return path;
-  }
-
-  async function pickImageFromCamera() {
-    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-    if (!permissionResult.granted) {
-      console.log(permissionResult)
-      Alert.alert('Permission required', 'Permission to access the camera is required.');
-      return;
-    }
-
-    const result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ['images'],
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
-    });
-
-
-    if (result.canceled) return;
-    const path = result.assets[0].uri;
-    return path;
-  }
+  const [modalVisible, setModalVisible] = useState(false);
 
   async function makeSoundBoard(method) {
     const thumbnailPath = method === "gallery" ? await pickImageFromGallery() : await pickImageFromCamera();
