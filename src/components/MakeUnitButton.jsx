@@ -1,26 +1,29 @@
-import { Pressable, Text, StyleSheet, View, Modal} from "react-native";
+import { Pressable, Text, StyleSheet, View, Modal } from "react-native";
 import { createUnit } from '../utils/fileSystem';
 import { useState } from "react";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { pickImageFromGallery, pickImageFromCamera, pickAudioFromFiles } from '../utils/pick';
+import { pickImageFromGallery, pickImageFromCamera, pickAudioFromFiles, useMicrophone} from '../utils/pick';
+import { getPathFromState } from "expo-router/build/fork/getPathFromState";
 
 function MakeUnitButton(props) {
     const [modalVisible, setModalVisible] = useState(false);
+    const [thumbnailPath, setThumbnailPath] = useState();
+    const recorder = useMicrophone();
 
-    async function handlePressMakeUnit(inputType) {
-        const thumbnailPath = await (inputType === "camera" ? pickImageFromCamera() : pickImageFromGallery());
+    async function handlePressMakeUnit(audioPath) {
+        console.log(thumbnailPath + " t " + audioPath);
         if (!thumbnailPath) return;
-        const audioPath = await pickAudioFromFiles();
         if (!audioPath) return;
 
-        const res = createUnit(props.soundboardName, thumbnailPath, audioPath);
+       const res = createUnit(props.soundboardName, thumbnailPath, audioPath);
         props.setUnits((prev) => [...prev, { audio: res.audio, thumbnail: res.thumbnail }])
         setModalVisible(false);
+        setThumbnailPath(null);
     }
 
     return (
         <View style={{ width: "100%" }}>
-            <Pressable onPress={()=>setModalVisible(true)} style={styles.primaryButton}>
+            <Pressable onPress={() => setModalVisible(true)} style={styles.primaryButton}>
                 <Text style={styles.primaryButtonText}>Create Unit</Text>
             </Pressable>
 
@@ -41,7 +44,7 @@ function MakeUnitButton(props) {
                                     styles.primaryButton,
                                     pressed && { opacity: 0.8 }
                                 ]}
-                                onPress={() => handlePressMakeUnit("camera")}
+                                onPress={async () => setThumbnailPath(await pickImageFromCamera())}
                             >
                                 <Text style={styles.primaryButtonText}>Camera</Text>
                             </Pressable>
@@ -51,74 +54,115 @@ function MakeUnitButton(props) {
                                     styles.primaryButton,
                                     pressed && { opacity: 0.8 }
                                 ]}
-                                onPress={() => handlePressMakeUnit("gallery")}
+                                onPress={async () => setThumbnailPath(await pickImageFromGallery())}
                             >
                                 <Text style={styles.primaryButtonText}>Gallery</Text>
                             </Pressable>
 
+                        </View>
+
+                        <View style={styles.thumbnailButtonsContainer}>
+                            <Pressable
+                                style={({ pressed }) => [
+                                    styles.primaryButton,
+                                    pressed && { opacity: 0.8 }
+                                ]}
+                                onPress={async () => await recorder.startRecording()}
+                            >
+                                <Text style={styles.primaryButtonText}>Start Recording</Text>
+                            </Pressable>
+
+                            <Pressable
+                                style={({ pressed }) => [
+                                    styles.primaryButton,
+                                    pressed && { opacity: 0.8 }
+                                ]}
+                                onPress={async () =>{
+                                    const path = await recorder.stopRecording();
+                                    handlePressMakeUnit(path);
+                                    setModalVisible(false);
+                                }}
+                            >
+                                <Text style={styles.primaryButtonText}>Stop Recording</Text>
+                            </Pressable>
+
+                            <Pressable
+                                style={({ pressed }) => [
+                                    styles.primaryButton,
+                                    pressed && { opacity: 0.8 }
+                                ]}
+                                onPress={async () =>{
+                                    const path = await pickAudioFromFiles();
+                                    handlePressMakeUnit(path);
+                                    setModalVisible(false);
+                                }}
+                            >
+                                <Text style={styles.primaryButtonText}>Import from Files</Text>
+                            </Pressable>
                         </View>
                     </View>
 
 
                 </View>
             </Modal>
+
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.45)",
-    justifyContent: "center",
-    alignItems: "center",
-  },
+    overlay: {
+        flex: 1,
+        backgroundColor: "rgba(0,0,0,0.45)",
+        justifyContent: "center",
+        alignItems: "center",
+    },
 
-  modalCard: {
-    width: "85%",
-    backgroundColor: "#fff",
-    borderRadius: 16,
-    padding: 20,
-  },
+    modalCard: {
+        width: "85%",
+        backgroundColor: "#fff",
+        borderRadius: 16,
+        padding: 20,
+    },
 
-  closeIcon: {
-    alignSelf: "flex-end",
-  },
+    closeIcon: {
+        alignSelf: "flex-end",
+    },
 
-  title: {
-    fontSize: 20,
-    fontWeight: "600",
-    marginBottom: 15,
-    textAlign: "center",
-  },
+    title: {
+        fontSize: 20,
+        fontWeight: "600",
+        marginBottom: 15,
+        textAlign: "center",
+    },
 
-  input: {
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 10,
-    padding: 12,
-    marginBottom: 20,
-  },
+    input: {
+        borderWidth: 1,
+        borderColor: "#ddd",
+        borderRadius: 10,
+        padding: 12,
+        marginBottom: 20,
+    },
 
-  primaryButton: {
-    backgroundColor: "#2979FF",
-    paddingVertical: 14,
-    borderRadius: 10,
-    alignItems: "center",
-    flex: 1,
-  },
+    primaryButton: {
+        backgroundColor: "#2979FF",
+        paddingVertical: 14,
+        borderRadius: 10,
+        alignItems: "center",
+        flex: 1,
+    },
 
-  primaryButtonText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "600",
-  },
+    primaryButtonText: {
+        color: "white",
+        fontSize: 16,
+        fontWeight: "600",
+    },
 
-  thumbnailButtonsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    gap: 10,
-  },
+    thumbnailButtonsContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        gap: 10,
+    },
 });
 
 export default MakeUnitButton;
