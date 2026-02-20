@@ -158,6 +158,7 @@ function MakeUnitButton(props) {
                                 <Pressable
                                     style={({ pressed }) => [
                                         styles.primaryButton,
+                                        {backgroundColor: "red"},
                                         pressed && { opacity: 0.8 }
                                     ]}
                                     onPress={async () => {
@@ -189,13 +190,15 @@ const styles = StyleSheet.create({
 
     modalCard: {
         width: "85%",
-        backgroundColor: "#fff",
+        backgroundColor: "#1C2128",
         borderRadius: 16,
         padding: 20,
     },
 
     closeIcon: {
         alignSelf: "flex-end",
+        color: "white",
+        fontSize: 25,
     },
 
     title: {
@@ -214,7 +217,7 @@ const styles = StyleSheet.create({
     },
 
     primaryButton: {
-        backgroundColor: "#2979FF",
+        backgroundColor: "#238636",
         paddingVertical: 14,
         borderRadius: 10,
         alignItems: "center",
@@ -238,27 +241,28 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     thumbnailPreview: {
-        width: 64,
-        height: 64,
+        width: 150,
+        height: 150,
         borderRadius: 8,
         backgroundColor: '#eee'
     },
     thumbnailPlaceholder: {
-        width: 64,
-        height: 64,
+        width: 150,
+        height: 150,
         borderRadius: 8,
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#933a3a',
         borderWidth: 1,
         borderColor: '#ddd'
     },
     secondaryButton: {
         paddingVertical: 10,
         paddingHorizontal: 12,
-        backgroundColor: '#eee',
+        backgroundColor: '#009086',
+        borderColor: "white",
         borderRadius: 8,
     },
     secondaryButtonText: {
-        color: '#111',
+        color: '#ffffff',
         fontSize: 14,
     },
 });

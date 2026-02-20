@@ -12,7 +12,7 @@ function MakeSoundboardButton(props) {
   async function makeSoundBoard(method) {
     const thumbnailPath = method === "gallery" ? await pickImageFromGallery() : await pickImageFromCamera();
 
-    if(thumbnailPath) {
+    if (thumbnailPath) {
       const newtThumbnailPath = createSoundboard(soundboardName, thumbnailPath);
       props.setSoundboards((prev) => [...prev, { name: soundboardName, thumbnail: newtThumbnailPath }]);
       setSoundboardName(null);
@@ -41,6 +41,7 @@ function MakeSoundboardButton(props) {
 
           <TextInput
             placeholder="Enter soundboard name"
+            placeholderTextColor="#6E7681"
             value={soundboardName}
             onChangeText={setSoundboardName}
             style={styles.input}
@@ -52,8 +53,8 @@ function MakeSoundboardButton(props) {
                 styles.primaryButton,
                 pressed && { opacity: 0.8 }
               ]}
-              onPress={()=>{
-                if(!soundboardName) {
+              onPress={() => {
+                if (!soundboardName) {
                   Alert.alert("Error", "Please enter a soundboard name first.");
                   return;
                 }
@@ -68,12 +69,13 @@ function MakeSoundboardButton(props) {
                 styles.primaryButton,
                 pressed && { opacity: 0.8 }
               ]}
-              onPress={() =>{
-                if(!soundboardName) {
+              onPress={() => {
+                if (!soundboardName) {
                   Alert.alert("Error", "Please enter a soundboard name first.");
                   return;
                 }
-                makeSoundBoard("gallery")}
+                makeSoundBoard("gallery")
+              }
               }
             >
               <Text style={styles.primaryButtonText}>Gallery</Text>
@@ -99,13 +101,16 @@ const styles = StyleSheet.create({
 
   modalCard: {
     width: "85%",
-    backgroundColor: "#fff",
+    backgroundColor: "#1C2128",
     borderRadius: 16,
     padding: 20,
+    borderColor: "#30363D",
   },
 
   closeIcon: {
     alignSelf: "flex-end",
+    color: "white",
+    fontSize: 25,
   },
 
   title: {
@@ -113,18 +118,21 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     marginBottom: 15,
     textAlign: "center",
+    color: "#E6EDF3",
   },
 
   input: {
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: "#30363D",
     borderRadius: 10,
     padding: 12,
     marginBottom: 20,
+    color: "#ffffff",
+    backgroundColor: "#0D1117",
   },
 
   primaryButton: {
-    backgroundColor: "#2979FF",
+    backgroundColor: "#238636",
     paddingVertical: 14,
     borderRadius: 10,
     alignItems: "center",
@@ -132,9 +140,9 @@ const styles = StyleSheet.create({
   },
 
   primaryButtonText: {
-    color: "white",
+    color: "#ffffff",
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: "800",
   },
 
   thumbnailButtonsContainer: {

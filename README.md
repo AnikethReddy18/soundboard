@@ -1,8 +1,16 @@
-# Welcome to your Expo app 👋
+# Soundboard 🎵
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native app built with Expo that lets you create, organize, and play custom soundboards with your favorite sounds.
 
-## Get started
+## Features
+
+- **Create Soundboards**: Organize sounds into custom soundboards with custom thumbnails
+- **Add Sounds**: Pick audio files from your device and add them to soundboards
+- **Play Audio**: Play sounds with a tap, perfect for memes, notifications, or creative projects
+- **Persistent Storage**: Sounds and soundboards are saved to your device storage
+- **Cross-Platform**: Runs on Android, iOS, and web platforms
+
+## Getting Started
 
 1. Install dependencies
 
@@ -13,38 +21,45 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 2. Start the app
 
    ```bash
-   npx expo start
+   npm start
    ```
 
-In the output, you'll find options to open the app in a
+3. Open on your platform:
+   - **Android**: Press `a` in the terminal
+   - **iOS**: Press `i` in the terminal
+   - **Web**: Press `w` in the terminal
+   - **Expo Go**: Scan the QR code with Expo Go app
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Project Structure
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+src/
+├── app/                    # App screens (file-based routing)
+│   ├── index.jsx          # Home screen
+│   ├── [soundboardScreen].jsx  # Soundboard detail screen
+│   └── _layout.tsx        # Layout wrapper
+├── components/            # Reusable components
+│   ├── Soundboard.jsx     # Soundboard item
+│   ├── Unit.jsx           # Sound unit item
+│   ├── MakeSoundboardButton.jsx
+│   └── MakeUnitButton.jsx
+└── utils/                 # Utility functions
+    ├── fileSystem.js      # File system operations
+    └── pick.js            # File picker utilities
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Available Scripts
 
-## Learn more
+- `npm start` - Start development server
+- `npm run android` - Build and run on Android
+- `npm run ios` - Build and run on iOS
+- `npm run web` - Run web version
+- `npm run lint` - Run ESLint
 
-To learn more about developing your project with Expo, look at the following resources:
+## Technologies Used
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- **React Native** - Cross-platform mobile development
+- **Expo** - Simplified React Native development
+- **Expo Audio** - Audio playback
+- **Expo File System** - Local storage access
+- **Expo Router** - File-based routing
